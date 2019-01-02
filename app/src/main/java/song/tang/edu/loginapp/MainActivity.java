@@ -19,7 +19,7 @@ import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity{
 
-    String region = "";
+    public static String region = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
