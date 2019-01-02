@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LogInApp</string>
+    <string-array name="regions">
+        <item>North America</item>
+        <item>Europe</item>
+    </string-array>
 </resources>
