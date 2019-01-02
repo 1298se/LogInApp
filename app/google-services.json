@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "762008919164",
+    "firebase_url": "https://fir-loginapp-e5aee.firebaseio.com",
+    "project_id": "fir-loginapp-e5aee",
+    "storage_bucket": "fir-loginapp-e5aee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762008919164:android:1d099a66ae52822a",
+        "android_client_info": {
+          "package_name": "song.tang.edu.loginapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762008919164-h4saqimtd0i1kq5p23q3tv3p3mchrh7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF4lD9OEmPZwxPs3N8_kbtx2Nca1Ci3co"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

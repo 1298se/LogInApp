@@ -19,17 +19,23 @@ import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity{
 
-    public static String region = "";
+    private String region;
+    private Spinner regionSpinner;
+    private ArrayAdapter<String> regionAdapter;
+    private Button logIn, signUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Init
+        regionSpinner = (Spinner) findViewById(R.id.regionSpinnerMain);
+        logIn = (Button) findViewById(R.id.loginButton);
+        signUp = (Button) findViewById(R.id.signUpButtonMain);
 
         // Region Drop Down Menu
-        Spinner regionSpinner = (Spinner) findViewById(R.id.regionSpinner);
 
-        ArrayAdapter<String> regionAdapter = new ArrayAdapter<String>(MainActivity.this,
+        regionAdapter = new ArrayAdapter<String>(MainActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.regions));
         regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -55,7 +61,6 @@ public class MainActivity extends AppCompatActivity{
         });
 
         // Log In
-        Button logIn = (Button) findViewById(R.id.loginButton);
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,8 +80,7 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
-        // Registration
-        Button signUp = (Button) findViewById(R.id.signupButton);
+        // Sign Up
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

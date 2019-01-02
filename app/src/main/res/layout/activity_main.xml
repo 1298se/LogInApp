@@ -25,12 +25,11 @@
         app:layout_constraintVertical_bias="0.103" />
 
     <Spinner
-        android:id="@+id/regionSpinner"
+        android:id="@+id/regionSpinnerMain"
         android:layout_width="252dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="292dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -77,13 +76,11 @@
         app:layout_constraintVertical_bias="0.014" />
 
     <Button
-        android:id="@+id/signupButton"
+        android:id="@+id/signUpButtonMain"
         android:layout_width="180dp"
         android:layout_height="59dp"
         android:layout_marginBottom="96dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Sign Up"

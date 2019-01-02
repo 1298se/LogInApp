@@ -4,4 +4,5 @@
         <item>North America</item>
         <item>Europe</item>
     </string-array>
+    <string name="region"></string>
 </resources>
