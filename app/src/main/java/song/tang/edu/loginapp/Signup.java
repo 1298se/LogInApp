@@ -1,6 +1,7 @@
 package song.tang.edu.loginapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 
 public class Signup extends AppCompatActivity {
@@ -82,16 +85,20 @@ public class Signup extends AppCompatActivity {
             }
         });
 
-
+        //Already have an account
         signInTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent login = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(login);
             }
         });
+
     }
 
     private void registerUser(){
+        final String firstName = firstNameEditText.getText().toString().trim();
+        final String lastName = lastNameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
@@ -113,9 +120,19 @@ public class Signup extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(Signup.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
+
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(firstName + " " + lastName).build();
+
+                            user.updateProfile(profileUpdates);
+                            finish();
+                            startActivity(new Intent(getApplicationContext(), Login.class));
                         }
                         else {
-                            Toast.makeText(Signup.this, "Unsuccessful Registration.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Signup.this, "Unsuccessful Registration. Please Try Again",
+                                    Toast.LENGTH_SHORT).show();
                         }
                         progressDialog.dismiss();
                     }

@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 // PseudoCode
 // Title
 // Dropdown Menu for Region
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity{
     private Spinner regionSpinner;
     private ArrayAdapter<String> regionAdapter;
     private Button logIn, signUp;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,13 @@ public class MainActivity extends AppCompatActivity{
         regionSpinner = (Spinner) findViewById(R.id.regionSpinnerMain);
         logIn = (Button) findViewById(R.id.loginButton);
         signUp = (Button) findViewById(R.id.signUpButtonMain);
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        // User Already logged in
+        if(firebaseAuth.getCurrentUser() != null) {
+            // Profile
+            startActivity(new Intent(getApplicationContext(), Profile.class));
+        }
 
         // Region Drop Down Menu
 
