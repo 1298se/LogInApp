@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".Signup">
 
     <EditText
         android:id="@+id/emailEditText"
+        android:background="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -26,6 +28,7 @@
 
     <EditText
         android:id="@+id/passwordEditText"
+        android:background="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="128dp"
@@ -44,6 +47,7 @@
 
     <EditText
         android:id="@+id/firstNameEditText"
+        android:background="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -62,6 +66,7 @@
 
     <EditText
         android:id="@+id/lastNameEditText"
+        android:background="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -83,18 +88,20 @@
         android:layout_width="217dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="84dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:background="@color/colorText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.962"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.213" />
 
     <TextView
         android:id="@+id/textView"
+        android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -111,6 +118,8 @@
 
     <Button
         android:id="@+id/signUpButtonSign"
+        android:background="@color/colorText"
+        android:textColor="@color/background"
         android:layout_width="113dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -127,6 +136,7 @@
 
     <TextView
         android:id="@+id/signInTextView"
+        android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

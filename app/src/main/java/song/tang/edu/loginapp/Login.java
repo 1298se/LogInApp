@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +20,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.regex.Pattern;
+
 public class Login extends AppCompatActivity {
+
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=\\S+$).{8,}$");
 
     private TextView regionTextView;
     private EditText emailEditText, passwordEditText;
@@ -43,7 +50,11 @@ public class Login extends AppCompatActivity {
             String text = getIntent().getExtras().getString("song.tang.edu.region");
             regionTextView.setText(text);
         }
-
+        // Valid Email/Password
+        signIn.setEnabled(false);
+        setButtonColour();
+        emailEditText.addTextChangedListener(loginTextWatcher);
+        passwordEditText.addTextChangedListener(loginTextWatcher);
 
         // If user is already logged in
         if(firebaseAuth.getCurrentUser() != null) {
@@ -72,14 +83,14 @@ public class Login extends AppCompatActivity {
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)) {
+        /*if(TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Please Enter Your Email", Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please Enter A Password", Toast.LENGTH_LONG).show();
             return;
-        }
+        }*/
 
         progressDialog.setMessage("Logging In...");
         progressDialog.show();
@@ -101,4 +112,64 @@ public class Login extends AppCompatActivity {
                     }
                 });
     }
+    private boolean validateEmail() {
+        String email = emailEditText.getText().toString().trim();
+
+        if (email.isEmpty()){
+            passwordEditText.setError("Please Enter your Email");
+            return false;
+        }
+        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.setError("Please Enter a Valid Email Address");
+            return false;
+        }
+        else {
+            emailEditText.setError(null);
+            return true;
+        }
+    }
+    private boolean validatePassword() {
+        String password = passwordEditText.getText().toString();
+
+        if (password.isEmpty()){
+            passwordEditText.setError("Please Enter a Password");
+            return false;
+
+        }else if(!PASSWORD_PATTERN.matcher(password).matches()){
+            passwordEditText.setError("Invalid Password");
+            return false;
+        }
+        else {
+            passwordEditText.setError(null);
+            return true;
+        }
+    }
+    private void setButtonColour(){
+        if(!signIn.isEnabled()){
+            signIn.setBackgroundColor(getResources().getColor(R.color.inactive));
+        }
+        else {
+            signIn.setBackgroundColor(getResources().getColor(R.color.colorText));
+        }
+    }
+    private TextWatcher loginTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString();
+
+            validateEmail();
+            validatePassword();
+
+            signIn.setEnabled(!email.isEmpty() && !password.isEmpty() && validateEmail() && validatePassword());
+            setButtonColour();
+        }
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 }

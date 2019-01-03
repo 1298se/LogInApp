@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,8 +26,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
+import java.util.regex.Pattern;
+
 
 public class Signup extends AppCompatActivity {
+
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=\\S+$).{8,}$");
 
     private String region;
     private Spinner regionSpinner;
@@ -33,6 +40,7 @@ public class Signup extends AppCompatActivity {
     private TextView signInTextView;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+
 
 
     @Override
@@ -49,6 +57,15 @@ public class Signup extends AppCompatActivity {
         signInTextView = (TextView)findViewById(R.id.signInTextView);
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
+
+
+        // Valid First Name, Last Name, Email, Password
+        signUpButton.setEnabled(false);
+        setButtonColour();
+        firstNameEditText.addTextChangedListener(signupTextWatcher);
+        lastNameEditText.addTextChangedListener(signupTextWatcher);
+        emailEditText.addTextChangedListener(signupTextWatcher);
+        passwordEditText.addTextChangedListener(signupTextWatcher);
 
 
         // Drop Down Menu
@@ -100,16 +117,16 @@ public class Signup extends AppCompatActivity {
         final String firstName = firstNameEditText.getText().toString().trim();
         final String lastName = lastNameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString();
 
-        if(TextUtils.isEmpty(email)) {
+        /*if(TextUtils.isEmpty(firstName)) {
             Toast.makeText(this, "Please Enter Your Email", Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Please Enter A Password", Toast.LENGTH_LONG).show();
             return;
-        }
+        }*/
 
         progressDialog.setMessage("Registering User...");
         progressDialog.show();
@@ -138,4 +155,69 @@ public class Signup extends AppCompatActivity {
                     }
                 });
     }
+    private boolean validateEmail() {
+        String email = emailEditText.getText().toString().trim();
+
+        if (email.isEmpty()){
+            passwordEditText.setError("Please Enter your Email");
+            return false;
+        }
+        else if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            emailEditText.setError("Please Enter a Valid Email Address");
+            return false;
+        }
+        else {
+            emailEditText.setError(null);
+            return true;
+        }
+    }
+    private boolean validatePassword() {
+        String password = passwordEditText.getText().toString();
+
+         if (password.isEmpty()){
+             passwordEditText.setError("Please Enter a Password");
+             return false;
+
+         }else if(!PASSWORD_PATTERN.matcher(password).matches()){
+            passwordEditText.setError("Invalid Password");
+            return false;
+        }
+        else {
+            passwordEditText.setError(null);
+            return true;
+        }
+    }
+    private void setButtonColour(){
+        if(!signUpButton.isEnabled()){
+            signUpButton.setBackgroundColor(getResources().getColor(R.color.inactive));
+        }
+        else {
+            signUpButton.setBackgroundColor(getResources().getColor(R.color.colorText));
+        }
+    }
+    private TextWatcher signupTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String firstName = firstNameEditText.getText().toString().trim();
+            String lastName = lastNameEditText.getText().toString().trim();
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString();
+
+            validateEmail();
+            validatePassword();
+
+            signUpButton.setEnabled(!email.isEmpty() && !password.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() &&
+                    validateEmail() && validatePassword());
+            setButtonColour();
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 }

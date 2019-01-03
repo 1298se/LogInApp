@@ -4,10 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/loginButton"
+        android:textColor="@color/background"
+        android:background="@color/colorText"
         android:layout_width="183dp"
         android:layout_height="54dp"
         android:layout_marginBottom="8dp"
@@ -26,6 +29,7 @@
 
     <Spinner
         android:id="@+id/regionSpinnerMain"
+        android:background="@color/colorText"
         android:layout_width="252dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="292dp"
@@ -40,12 +44,11 @@
 
     <TextView
         android:id="@+id/titleTextView"
+        android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="84dp"
         android:text="Login App"
@@ -59,12 +62,11 @@
 
     <TextView
         android:id="@+id/textView3"
+        android:textColor="@color/colorText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:text="Please Select Your Region"
@@ -77,6 +79,8 @@
 
     <Button
         android:id="@+id/signUpButtonMain"
+        android:textColor="@color/background"
+        android:background="@color/colorText"
         android:layout_width="180dp"
         android:layout_height="59dp"
         android:layout_marginBottom="96dp"
