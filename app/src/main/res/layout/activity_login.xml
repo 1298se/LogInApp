@@ -27,7 +27,7 @@
 
     <EditText
         android:id="@+id/emailEditTextLog"
-        android:background="@color/colorText"
+        android:background="@drawable/rounded_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="7dp"
@@ -46,7 +46,7 @@
 
     <EditText
         android:id="@+id/passwordEditTextLog"
-        android:background="@color/colorText"
+        android:background="@drawable/rounded_edittext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -63,7 +63,7 @@
 
     <Button
         android:id="@+id/signInButtonLog"
-        android:background="@color/colorText"
+        android:background="@drawable/rounded_button"
         android:textColor="@color/background"
         android:layout_width="122dp"
         android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
 
     <Button
         android:id="@+id/backButton"
-        android:background="@color/colorText"
+        android:background="@drawable/rounded_button"
         android:textColor="@color/background"
         android:layout_width="122dp"
         android:layout_height="wrap_content"

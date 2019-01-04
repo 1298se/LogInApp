@@ -9,8 +9,8 @@
 
     <Button
         android:id="@+id/loginButton"
+        android:background="@drawable/rounded_button"
         android:textColor="@color/background"
-        android:background="@color/colorText"
         android:layout_width="183dp"
         android:layout_height="54dp"
         android:layout_marginBottom="8dp"
@@ -29,7 +29,7 @@
 
     <Spinner
         android:id="@+id/regionSpinnerMain"
-        android:background="@color/colorText"
+        android:background="@drawable/rounded_edittext"
         android:layout_width="252dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="292dp"
@@ -79,8 +79,8 @@
 
     <Button
         android:id="@+id/signUpButtonMain"
+        android:background="@drawable/rounded_button"
         android:textColor="@color/background"
-        android:background="@color/colorText"
         android:layout_width="180dp"
         android:layout_height="59dp"
         android:layout_marginBottom="96dp"

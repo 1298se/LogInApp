@@ -146,10 +146,10 @@ public class Login extends AppCompatActivity {
     }
     private void setButtonColour(){
         if(!signIn.isEnabled()){
-            signIn.setBackgroundColor(getResources().getColor(R.color.inactive));
+            signIn.setBackground(getResources().getDrawable(R.drawable.rounded_button_inactive));
         }
         else {
-            signIn.setBackgroundColor(getResources().getColor(R.color.colorText));
+            signIn.setBackground(getResources().getDrawable(R.drawable.rounded_button));
         }
     }
     private TextWatcher loginTextWatcher = new TextWatcher() {

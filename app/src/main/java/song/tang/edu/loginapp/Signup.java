@@ -189,10 +189,10 @@ public class Signup extends AppCompatActivity {
     }
     private void setButtonColour(){
         if(!signUpButton.isEnabled()){
-            signUpButton.setBackgroundColor(getResources().getColor(R.color.inactive));
+            signUpButton.setBackground(getResources().getDrawable(R.drawable.rounded_button_inactive));
         }
         else {
-            signUpButton.setBackgroundColor(getResources().getColor(R.color.colorText));
+            signUpButton.setBackground(getResources().getDrawable(R.drawable.rounded_button));
         }
     }
     private TextWatcher signupTextWatcher = new TextWatcher() {
