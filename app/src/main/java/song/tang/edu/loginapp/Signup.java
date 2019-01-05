@@ -130,7 +130,7 @@ public class Signup extends AppCompatActivity {
                         if(task.isSuccessful()){
                             Toast.makeText(Signup.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
 
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
 
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(firstName + " " + lastName).build();
