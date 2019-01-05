@@ -5,4 +5,7 @@
         <item>Europe</item>
     </string-array>
     <string name="region"></string>
+    <string name="navigation_drawer_open">Open Navigation Drawer</string>
+    <string name="navigation_drawer_closed">Close Navigation Drawer</string>
+
 </resources>
