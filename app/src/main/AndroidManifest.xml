@@ -18,8 +18,10 @@
         </activity>
         <activity android:name=".Login" />
         <activity android:name=".Signup" />
-        <activity android:name=".Profile"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Profile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".EditUserProfile"></activity>
     </application>
 
 </manifest>

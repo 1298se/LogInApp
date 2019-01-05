@@ -116,17 +116,9 @@ public class Signup extends AppCompatActivity {
     private void registerUser(){
         final String firstName = firstNameEditText.getText().toString().trim();
         final String lastName = lastNameEditText.getText().toString().trim();
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString();
+        final String email = emailEditText.getText().toString().trim();
+        final String password = passwordEditText.getText().toString();
 
-        /*if(TextUtils.isEmpty(firstName)) {
-            Toast.makeText(this, "Please Enter Your Email", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Please Enter A Password", Toast.LENGTH_LONG).show();
-            return;
-        }*/
 
         progressDialog.setMessage("Registering User...");
         progressDialog.show();

@@ -58,9 +58,6 @@ public class Profile extends AppCompatActivity {
         userTextView = (TextView) headerView.findViewById(R.id.userTextView);
         userTextView.setText(user.getDisplayName());
 
-        // Change textView in home to user's display name
-
-
         // Change fragments in navigation drawer
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -99,6 +96,4 @@ public class Profile extends AppCompatActivity {
             super.onBackPressed();
         }
     }
-
-
 }
