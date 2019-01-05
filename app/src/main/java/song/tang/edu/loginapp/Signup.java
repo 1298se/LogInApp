@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.oob.SignUp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,7 +29,7 @@ import java.util.regex.Pattern;
 
 public class Signup extends AppCompatActivity {
 
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=\\S+$).{8,}$");
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=\\S+$).{1,}$");
 
     private String region;
     private Spinner regionSpinner;
@@ -169,14 +167,18 @@ public class Signup extends AppCompatActivity {
     private boolean validatePassword() {
         String password = passwordEditText.getText().toString();
 
-         if (password.isEmpty()){
+         if (password.isEmpty()) {
              passwordEditText.setError("Please Enter a Password");
              return false;
 
          }else if(!PASSWORD_PATTERN.matcher(password).matches()){
-            passwordEditText.setError("Invalid Password");
-            return false;
-        }
+                 passwordEditText.setError("Invalid Password");
+                 return false;
+
+         }else if(password.length() < 8) {
+             passwordEditText.setError("Password is Not Long Enough");
+             return false;
+         }
         else {
             passwordEditText.setError(null);
             return true;
