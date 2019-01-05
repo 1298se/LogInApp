@@ -14,12 +14,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class UserProfileFragment extends Fragment {
+    private Button editUserProfileButton, signOutButton;
+    private FirebaseAuth firebaseAuth;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Get user display name from Firebase
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
 
@@ -30,12 +32,23 @@ public class UserProfileFragment extends Fragment {
         TextView text = (TextView) view.findViewById(R.id.profileTextView);
         text.setText(user.getDisplayName());
 
-        Button editUserProfileButton = (Button) view.findViewById(R.id.editUserProfileButton);
+        editUserProfileButton = (Button) view.findViewById(R.id.editUserProfileButton);
         editUserProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent editProfile  = new Intent(getActivity(), EditUserProfile.class);
                 startActivity(editProfile);
+            }
+        });
+
+        // Sign Out button
+        signOutButton = (Button) view.findViewById(R.id.signOutButton);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                firebaseAuth.signOut();
+                getActivity().finish();
+                startActivity(new Intent(getActivity(), MainActivity.class));
             }
         });
 

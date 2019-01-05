@@ -46,6 +46,13 @@ public class Profile extends AppCompatActivity {
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Set default nav to home
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new HomeFragment()).commit();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+
         // Firebase
         if(firebaseAuth.getCurrentUser() == null){
             finish();
@@ -78,8 +85,8 @@ public class Profile extends AppCompatActivity {
                 return true;
             }
         });
-
-        /*signOut.setOnClickListener(new View.OnClickListener() {
+    }
+            /*signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 firebaseAuth.signOut();
@@ -87,7 +94,6 @@ public class Profile extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });*/
-    }
 
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
