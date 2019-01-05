@@ -6,12 +6,29 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class UserProfileFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_user_profile, container, false);
+        // Get user display name from Firebase
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+
+
+        // Change textView to user display name
+        LayoutInflater lf = getActivity().getLayoutInflater();
+        View view =  lf.inflate(R.layout.fragment_user_profile, container, false); //pass the correct layout name for the fragment
+
+        TextView text = (TextView) view.findViewById(R.id.profileTextView);
+        text.setText(user.getDisplayName());
+
+        return view;
+
     }
 }
