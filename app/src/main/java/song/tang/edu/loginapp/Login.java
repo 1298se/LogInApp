@@ -56,12 +56,6 @@ public class Login extends AppCompatActivity {
         emailEditText.addTextChangedListener(loginTextWatcher);
         passwordEditText.addTextChangedListener(loginTextWatcher);
 
-        // If user is already logged in
-        if(firebaseAuth.getCurrentUser() != null) {
-            // Profile
-            startActivity(new Intent(getApplicationContext(), Profile.class));
-        }
-
         // Sign In button
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -86,15 +86,6 @@ public class Profile extends AppCompatActivity {
             }
         });
     }
-            /*signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });*/
-
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);

@@ -37,11 +37,6 @@ public class MainActivity extends AppCompatActivity{
         signUp = (Button) findViewById(R.id.signUpButtonMain);
         firebaseAuth = FirebaseAuth.getInstance();
 
-        // User Already logged in
-        if(firebaseAuth.getCurrentUser() != null) {
-            // Profile
-            startActivity(new Intent(getApplicationContext(), Profile.class));
-        }
 
         // Region Drop Down Menu
 
@@ -98,5 +93,9 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(signup);
             }
         });
+    }
+    public void onBackPressed() {
+        finish();
+        System.exit(0);
     }
 }
