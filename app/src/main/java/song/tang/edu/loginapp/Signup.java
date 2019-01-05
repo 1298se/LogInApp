@@ -35,7 +35,8 @@ public class Signup extends AppCompatActivity {
 
     private String region;
     private Spinner regionSpinner;
-    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText;
+    private EditText firstNameEditText, lastNameEditText, emailEditText, passwordEditText,
+                verifyPasswordEditText;
     private Button signUpButton;
     private TextView signInTextView;
     private ProgressDialog progressDialog;
@@ -53,6 +54,7 @@ public class Signup extends AppCompatActivity {
         lastNameEditText = (EditText)findViewById(R.id.lastNameEditText);
         emailEditText = (EditText)findViewById(R.id.emailEditText);
         passwordEditText = (EditText)findViewById(R.id.passwordEditText);
+        verifyPasswordEditText = (EditText)findViewById(R.id.verifyPasswordEditText);
         signUpButton = (Button)findViewById(R.id.signUpButtonSign);
         signInTextView = (TextView)findViewById(R.id.signInTextView);
         progressDialog = new ProgressDialog(this);
@@ -66,6 +68,7 @@ public class Signup extends AppCompatActivity {
         lastNameEditText.addTextChangedListener(signupTextWatcher);
         emailEditText.addTextChangedListener(signupTextWatcher);
         passwordEditText.addTextChangedListener(signupTextWatcher);
+        verifyPasswordEditText.addTextChangedListener(signupTextWatcher);
 
 
         // Drop Down Menu
@@ -179,6 +182,26 @@ public class Signup extends AppCompatActivity {
             return true;
         }
     }
+    private boolean validateVerifyPassword() {
+        String password = passwordEditText.getText().toString();
+        String verifyPassword = verifyPasswordEditText.getText().toString();
+
+        if (password.isEmpty()){
+            verifyPasswordEditText.setError("Please Re-enter Your Password");
+            return false;
+
+        }else if(!PASSWORD_PATTERN.matcher(password).matches()){
+            verifyPasswordEditText.setError("Invalid Password");
+            return false;
+        }else if(!(verifyPassword.equals(password))){
+            verifyPasswordEditText.setError("Please Re-enter Your Password");
+            return false;
+        }
+        else {
+            verifyPasswordEditText.setError(null);
+            return true;
+        }
+    }
     private void setButtonColour(){
         if(!signUpButton.isEnabled()){
             signUpButton.setBackground(getResources().getDrawable(R.drawable.rounded_button_inactive));
@@ -198,12 +221,14 @@ public class Signup extends AppCompatActivity {
             String lastName = lastNameEditText.getText().toString().trim();
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString();
+            String verifyPassword = verifyPasswordEditText.getText().toString();
 
             validateEmail();
             validatePassword();
+            validateVerifyPassword();
 
-            signUpButton.setEnabled(!email.isEmpty() && !password.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() &&
-                    validateEmail() && validatePassword());
+            signUpButton.setEnabled(!firstName.isEmpty() && !lastName.isEmpty() && !email.isEmpty() && !password.isEmpty() &&
+                    !verifyPassword.isEmpty() && validateVerifyPassword() && validateEmail() && validatePassword());
             setButtonColour();
         }
 
