@@ -46,6 +46,7 @@ public class Login extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // Takes region input from MainActivity 
         if (getIntent().hasExtra("song.tang.edu.region")) {
             String text = getIntent().getExtras().getString("song.tang.edu.region");
             regionTextView.setText(text);

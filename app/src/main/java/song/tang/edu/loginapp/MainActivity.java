@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity{
 
 
         // Region Drop Down Menu
-
         regionAdapter = new ArrayAdapter<String>(MainActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.regions));
         regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

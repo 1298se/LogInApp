@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class UserProfileFragment extends Fragment {
     private Button editUserProfileButton, signOutButton;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
 
     @Nullable
     @Override
@@ -48,10 +50,13 @@ public class UserProfileFragment extends Fragment {
             public void onClick(View v) {
                 firebaseAuth.signOut();
                 getActivity().finish();
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                Intent signOut = new Intent(getActivity().getBaseContext(), MainActivity.class);
+                signOut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK| Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(signOut);
+
             }
         });
-
+        // Add profile picture Firebase Database
         return view;
 
     }
