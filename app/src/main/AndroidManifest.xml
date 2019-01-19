@@ -23,6 +23,8 @@
             android:name=".Profile"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".EditUserProfile"></activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
     </application>
 
 </manifest>

@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 
 public class EditUserProfile extends AppCompatActivity {
@@ -31,6 +33,7 @@ public class EditUserProfile extends AppCompatActivity {
     // Constants for camera/gallery
     private static final int REQUEST_CAMERA = 0;
     private static final int SELECT_FILE = 1;
+    private Uri profilePicURI;
 
     private EditText firstNameEditTextProf, lastNameEditTextProf;
     private Button updateProfileButton;
@@ -73,6 +76,7 @@ public class EditUserProfile extends AppCompatActivity {
             }
         });
     }
+
     private void updateUserProfile() {
         final String firstName = firstNameEditTextProf.getText().toString().trim();
         final String lastName = lastNameEditTextProf.getText().toString().trim();
@@ -88,12 +92,11 @@ public class EditUserProfile extends AppCompatActivity {
         user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     Toast.makeText(EditUserProfile.this, "Update Successful", Toast.LENGTH_SHORT).show();
                     finish();
                     startActivity(new Intent(getApplicationContext(), Profile.class));
-                }
-                else {
+                } else {
                     Toast.makeText(EditUserProfile.this, "Update Failed. Please Try Again", Toast.LENGTH_SHORT).show();
 
                 }
@@ -101,16 +104,17 @@ public class EditUserProfile extends AppCompatActivity {
             }
         });
     }
-    private void setButtonColour(){
-        if(!updateProfileButton.isEnabled()){
+
+    private void setButtonColour() {
+        if (!updateProfileButton.isEnabled()) {
             updateProfileButton.setBackground(getResources().getDrawable(R.drawable.rounded_button_inactive_gray));
             updateProfileButton.setTextColor(getResources().getColor(R.color.profileBg));
-        }
-        else {
+        } else {
             updateProfileButton.setBackground(getResources().getDrawable(R.drawable.rounded_button));
             updateProfileButton.setTextColor(getResources().getColor(R.color.background));
         }
     }
+
     private TextWatcher updateTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -133,16 +137,14 @@ public class EditUserProfile extends AppCompatActivity {
     };
 
     private void updateProfilePic() {
-        final CharSequence[] items = {"Take Photo", "Choose From Library"};
+        final CharSequence[] items = {"Choose From Library"};
         AlertDialog.Builder builder = new AlertDialog.Builder(EditUserProfile.this);
         builder.setTitle("Add a Profile Picture");
 
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Take Photo")) {
-                    openCamera();
-                } else if (items[item].equals("Choose From Library")) {
+                if (items[item].equals("Choose From Library")) {
                     openGallery();
                 }
             }
@@ -150,11 +152,12 @@ public class EditUserProfile extends AppCompatActivity {
         builder.show();
     }
 
-    private void openCamera() {
+    //ToDo: Camera Function for Profile Pic
+    /*private void openCamera() {
         Log.d("EDIT_PROFILE", "onClick: camera intent");
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(cameraIntent, REQUEST_CAMERA);
-    }
+    }*/
     private void openGallery() {
         Log.d("EDIT_PROFILE", "onClick: gallery intent");
         Intent storageIntent = new Intent(Intent.ACTION_PICK);
@@ -166,15 +169,34 @@ public class EditUserProfile extends AppCompatActivity {
     protected void onActivityResult(int requestcode, int resultcode, Intent data) {
         super.onActivityResult(requestcode, resultcode, data);
 
+        if (requestcode == SELECT_FILE && resultcode == RESULT_OK) {
+            Uri imageUri = data.getData();
+
+            CropImage.activity(imageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(250, 175)
+                    .start(this);
+        }
+                /*
         if (requestcode == REQUEST_CAMERA && resultcode == RESULT_OK) {
 
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             profileImageView.setImageBitmap(photo);
 
-        } else if (requestcode == SELECT_FILE && resultcode == RESULT_OK) {
-            Uri imageUri = data.getData();
+    */
+        if (requestcode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultcode == RESULT_OK) {
 
-            profileImageView.setImageURI(imageUri);
+                profilePicURI = result.getUri();
+                profileImageView.setImageURI(profilePicURI);
+
+            } else if (resultcode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+
+                Exception error = result.getError();
+
+            }
         }
     }
 }
+

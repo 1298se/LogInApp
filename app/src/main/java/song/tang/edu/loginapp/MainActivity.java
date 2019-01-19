@@ -68,11 +68,16 @@ public class MainActivity extends AppCompatActivity{
         logIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login = new Intent(getApplicationContext(), Login.class);
-                login.putExtra("song.tang.edu.region", region);
-                startActivity(login);
+                // If User is already signed in
+                if(firebaseAuth.getCurrentUser() != null) {
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
+                } else if(firebaseAuth.getCurrentUser() == null) {
+                    Intent login = new Intent(getApplicationContext(), Login.class);
+                    login.putExtra("song.tang.edu.region", region);
+                    startActivity(login);
+                }
 
-                // URI
+                // Using website
                 /*
                 String loginWeb = "https://sso.core.opentext.com";
                 Uri webAddress = Uri.parse(loginWeb);
