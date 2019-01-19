@@ -29,7 +29,7 @@ import com.google.firebase.auth.UserProfileChangeRequest;
 public class EditUserProfile extends AppCompatActivity {
 
     // Constants for camera/gallery
-    private static final int REQUEST_CAMERA = 3;
+    private static final int REQUEST_CAMERA = 0;
     private static final int SELECT_FILE = 1;
 
     private EditText firstNameEditTextProf, lastNameEditTextProf;
@@ -171,24 +171,10 @@ public class EditUserProfile extends AppCompatActivity {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             profileImageView.setImageBitmap(photo);
 
-            /*UCrop.of(imageUri, imageUri)
-                    .withAspectRatio(16, 9)
-                    .withMaxResultSize(150, 100)
-                    .start(this);*/
-
         } else if (requestcode == SELECT_FILE && resultcode == RESULT_OK) {
             Uri imageUri = data.getData();
 
             profileImageView.setImageURI(imageUri);
         }
-
-        /*if (requestcode == UCrop.REQUEST_CROP) {
-            cropImageUri = UCrop.getOutput(data);
-            if (resultcode == RESULT_OK) {
-                profileImageView.setImageURI(Uri.parse(cropImageUri));
-            } else if (resultcode == UCrop.RESULT_ERROR) {
-                final Throwable cropError = UCrop.getError(data);
-            }
-        }*/
     }
 }
