@@ -76,8 +76,9 @@ public class EditUserProfile extends AppCompatActivity {
         firstNameEditTextProf.setText(fullNameArr[0]);
         lastNameEditTextProf.setText(fullNameArr[1]);
 
-        // Firebase Storage
-        mStorageRef = FirebaseStorage.getInstance().getReference("user_profile");
+        // Firebase Storage Reference
+        String uID= firebaseAuth.getCurrentUser().getUid();
+        mStorageRef = FirebaseStorage.getInstance().getReference("users/" + uID);
 
         // Set profile picture (Default picture if user has not uploaded any)
         mStorageRef.child("profile_img.null").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -142,7 +143,7 @@ public class EditUserProfile extends AppCompatActivity {
 
     private void uploadProfilePic() {
 
-        progressDialog.setMessage("Uploading Picture...");
+        progressDialog.setMessage("Updating Profile...");
         progressDialog.show();
 
             final StorageReference fileReference = mStorageRef.child("profile_img" + "." + getFileExtension(profilePicURI));
