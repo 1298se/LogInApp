@@ -1,7 +1,6 @@
 package song.tang.edu.loginapp;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
@@ -27,11 +26,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,16 +33,11 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.ArrayList;
-
-
 public class EditUserProfile extends AppCompatActivity {
 
     // Constants for camera/gallery
-    private static final int REQUEST_CAMERA = 0;
     private static final int SELECT_FILE = 1;
     private Uri profilePicURI;
-    private ArrayList<Upload> profilePicArr;
     private Boolean pictureSelected;
 
     private EditText firstNameEditTextProf, lastNameEditTextProf;
@@ -118,7 +107,6 @@ public class EditUserProfile extends AppCompatActivity {
         });
 
         // Choose Profile Image
-
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,8 +131,10 @@ public class EditUserProfile extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
-                        while(!urlTask.isSuccessful());
+
+                        // Unneeded code for profile pic(used to getDownloadUrl)
+                        /*Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while(!urlTask.isSuccessful());*/
 
                         progressDialog.dismiss();
                     }
