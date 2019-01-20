@@ -1,31 +1,45 @@
 package song.tang.edu.loginapp;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.util.ArrayList;
 
 
 public class EditUserProfile extends AppCompatActivity {
@@ -34,6 +48,8 @@ public class EditUserProfile extends AppCompatActivity {
     private static final int REQUEST_CAMERA = 0;
     private static final int SELECT_FILE = 1;
     private Uri profilePicURI;
+    private ArrayList<Upload> profilePicArr;
+    private Boolean pictureSelected;
 
     private EditText firstNameEditTextProf, lastNameEditTextProf;
     private Button updateProfileButton;
@@ -41,10 +57,16 @@ public class EditUserProfile extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private ImageView profileImageView;
 
+    // Firebase Storage
+    private StorageReference mStorageRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_user_profile);
+
+        // Check if user already has profile
+
 
         // Init
         firstNameEditTextProf = (EditText) findViewById(R.id.firstNameEditTextProf);
@@ -53,28 +75,87 @@ public class EditUserProfile extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
         profileImageView = (ImageView) findViewById(R.id.profileImageView);
-
         // Valid first name, last name
-        updateProfileButton.setEnabled(false);
         setButtonColour();
         firstNameEditTextProf.addTextChangedListener(updateTextWatcher);
         lastNameEditTextProf.addTextChangedListener(updateTextWatcher);
 
-        // Button onclick to update name
-        updateProfileButton.setOnClickListener(new View.OnClickListener() {
+        String[] fullNameArr = firebaseAuth.getCurrentUser().getDisplayName().split("\\s+");
+        firstNameEditTextProf.setText(fullNameArr[0]);
+        lastNameEditTextProf.setText(fullNameArr[1]);
+
+        // Firebase Storage
+        mStorageRef = FirebaseStorage.getInstance().getReference("user_profile");
+
+        // Set profile picture (Default picture if user has not uploaded any)
+        mStorageRef.child("profile_img.null").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onClick(View v) {
-                updateUserProfile();
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(profileImageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
             }
         });
 
-        //
+        // Button onclick to update name, profile picture
+        pictureSelected = false;
+        updateProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pictureSelected) {
+                    updateUserProfile();
+                    uploadProfilePic();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
+                } else {
+                    updateUserProfile();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), Profile.class));
+                }
+            }
+        });
+
+        // Choose Profile Image
+
         profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateProfilePic();
+                selectProfilePic();
+
             }
         });
+    }
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadProfilePic() {
+
+        progressDialog.setMessage("Uploading Picture...");
+        progressDialog.show();
+
+        final StorageReference fileReference = mStorageRef.child("profile_img" + "." + getFileExtension(profilePicURI));
+        fileReference.putFile(profilePicURI)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while(!urlTask.isSuccessful());
+
+                        progressDialog.dismiss();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(EditUserProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void updateUserProfile() {
@@ -95,9 +176,9 @@ public class EditUserProfile extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Toast.makeText(EditUserProfile.this, "Update Successful", Toast.LENGTH_SHORT).show();
                     finish();
-                    startActivity(new Intent(getApplicationContext(), Profile.class));
                 } else {
                     Toast.makeText(EditUserProfile.this, "Update Failed. Please Try Again", Toast.LENGTH_SHORT).show();
+                    finish();
 
                 }
                 progressDialog.dismiss();
@@ -136,7 +217,7 @@ public class EditUserProfile extends AppCompatActivity {
         }
     };
 
-    private void updateProfilePic() {
+    private void selectProfilePic() {
         final CharSequence[] items = {"Choose From Library"};
         AlertDialog.Builder builder = new AlertDialog.Builder(EditUserProfile.this);
         builder.setTitle("Add a Profile Picture");
@@ -189,7 +270,9 @@ public class EditUserProfile extends AppCompatActivity {
             if (resultcode == RESULT_OK) {
 
                 profilePicURI = result.getUri();
-                profileImageView.setImageURI(profilePicURI);
+
+                Picasso.get().load(profilePicURI).into(profileImageView);
+                pictureSelected = true;
 
             } else if (resultcode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
 

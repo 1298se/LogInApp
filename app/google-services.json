@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:762008919164:android:1d099a66ae52822a",
+        "mobilesdk_app_id": "1:762008919164:android:072ad68c6c046d71",
         "android_client_info": {
-          "package_name": "song.tang.edu.loginapp"
+          "package_name": "song.tang.edu"
         }
       },
       "oauth_client": [
@@ -31,6 +31,50 @@
         "appinvite_service": {
           "status": 1,
           "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762008919164:android:1d099a66ae52822a",
+        "android_client_info": {
+          "package_name": "song.tang.edu.loginapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762008919164-gvhskndvk66fcfcu7k39svs7ivgc9eoi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "song.tang.edu.loginapp",
+            "certificate_hash": "e59dc622f5ba1014f25f45a94b9094a294950385"
+          }
+        },
+        {
+          "client_id": "762008919164-h4saqimtd0i1kq5p23q3tv3p3mchrh7l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCF4lD9OEmPZwxPs3N8_kbtx2Nca1Ci3co"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762008919164-h4saqimtd0i1kq5p23q3tv3p3mchrh7l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

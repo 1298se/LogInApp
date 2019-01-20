@@ -38,6 +38,7 @@ public class UserProfileFragment extends Fragment {
         editUserProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getActivity().finish();
                 Intent editProfile  = new Intent(getActivity(), EditUserProfile.class);
                 startActivity(editProfile);
             }
