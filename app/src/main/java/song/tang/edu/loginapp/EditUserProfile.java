@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -39,6 +40,7 @@ public class EditUserProfile extends AppCompatActivity {
     private static final int SELECT_FILE = 1;
     private Uri profilePicURI;
     private Boolean pictureSelected;
+    private Boolean profilePicExists;
 
     private EditText firstNameEditTextProf, lastNameEditTextProf;
     private Button updateProfileButton;
@@ -55,6 +57,7 @@ public class EditUserProfile extends AppCompatActivity {
         setContentView(R.layout.activity_edit_user_profile);
 
         // Check if user already has profile
+        profilePicExists = true;
 
 
         // Init
@@ -85,6 +88,7 @@ public class EditUserProfile extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                profilePicExists = false;
             }
         });
 
@@ -95,7 +99,7 @@ public class EditUserProfile extends AppCompatActivity {
             public void onClick(View v) {
                 if(pictureSelected) {
                     updateUserProfile();
-                    uploadProfilePic();
+                    updateProfilePic();
                     finish();
                     startActivity(new Intent(getApplicationContext(), Profile.class));
                 } else {
@@ -121,32 +125,53 @@ public class EditUserProfile extends AppCompatActivity {
         return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
+    private void updateProfilePic() {
+        if(profilePicExists) {
+            mStorageRef.child("profile_img.null").delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    uploadProfilePic();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(EditUserProfile.this, "Profile Picture Update Failed",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            uploadProfilePic();
+        }
+    }
+
     private void uploadProfilePic() {
 
         progressDialog.setMessage("Uploading Picture...");
         progressDialog.show();
 
-        final StorageReference fileReference = mStorageRef.child("profile_img" + "." + getFileExtension(profilePicURI));
-        fileReference.putFile(profilePicURI)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            final StorageReference fileReference = mStorageRef.child("profile_img" + "." + getFileExtension(profilePicURI));
+            fileReference.putFile(profilePicURI)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                        // Unneeded code for profile pic(used to getDownloadUrl)
+                            // Unneeded code for profile pic(used to getDownloadUrl)
                         /*Task<Uri> urlTask = taskSnapshot.getStorage().getDownloadUrl();
                         while(!urlTask.isSuccessful());*/
 
-                        progressDialog.dismiss();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        Toast.makeText(EditUserProfile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                            progressDialog.dismiss();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            progressDialog.dismiss();
+                            Toast.makeText(EditUserProfile.this, "Picture Upload Failed",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
     }
+
 
     private void updateUserProfile() {
         final String firstName = firstNameEditTextProf.getText().toString().trim();
