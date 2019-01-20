@@ -23,6 +23,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.regex.Pattern;
 
@@ -38,7 +40,9 @@ public class Signup extends AppCompatActivity {
     private Button signUpButton;
     private TextView signInTextView;
     private ProgressDialog progressDialog;
+
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference mDatabasRef;
 
 
 
@@ -56,7 +60,10 @@ public class Signup extends AppCompatActivity {
         signUpButton = (Button)findViewById(R.id.signUpButtonSign);
         signInTextView = (TextView)findViewById(R.id.signInTextView);
         progressDialog = new ProgressDialog(this);
+
+        // Firebase
         firebaseAuth = FirebaseAuth.getInstance();
+        mDatabasRef = FirebaseDatabase.getInstance().getReference("users");
 
 
         // Valid First Name, Last Name, Email, Password
