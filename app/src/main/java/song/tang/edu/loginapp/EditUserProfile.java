@@ -100,12 +100,8 @@ public class EditUserProfile extends AppCompatActivity {
                 if(pictureSelected) {
                     updateUserProfile();
                     updateProfilePic();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), Profile.class));
                 } else {
                     updateUserProfile();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), Profile.class));
                 }
             }
         });
@@ -160,6 +156,7 @@ public class EditUserProfile extends AppCompatActivity {
                         while(!urlTask.isSuccessful());*/
 
                             progressDialog.dismiss();
+                            startActivity(new Intent(getApplicationContext(), Profile.class));
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -190,11 +187,12 @@ public class EditUserProfile extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(EditUserProfile.this, "Update Successful", Toast.LENGTH_SHORT).show();
-                    finish();
+                    if(!pictureSelected) {
+                        finish();
+                        startActivity(new Intent(getApplicationContext(), Profile.class));
+                    }
                 } else {
                     Toast.makeText(EditUserProfile.this, "Update Failed. Please Try Again", Toast.LENGTH_SHORT).show();
-                    finish();
-
                 }
                 progressDialog.dismiss();
             }
