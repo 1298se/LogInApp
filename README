@@ -1,1 +1,4 @@
-login/registration app made using Firebase database and authentication
+Login/Registration Android app with features such as login, registration, profile picture and profile edits
+Implements Firebase for User authentication, storage, and database
+WORK IN PROGRESS: 
+  Extensions: Create chat between users, Create shared file storage, Create file upload storage
